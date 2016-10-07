@@ -1,21 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React, { Component } from 'react'
+import './App.css'
+import AddTodoItem from './components/AddTodoItem'
+import ListTodoItems from './components/ListTodoItems'
 class App extends Component {
-  render() {
+
+  constructor (props) {
+    super(props)
+    this.state = { items: [] }
+  }
+
+  handleOnSubmit = (value) => {
+    const { items } = this.state
+
+    this.setState({
+      items: items.concat(value)
+    })
+  }
+
+  render () {
+    const { items } = this.state
+
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className='App'>
+        <header>
+          <h1>Todo App</h1>
+          <AddTodoItem onSubmit={ this.handleOnSubmit } />
+          <ListTodoItems items={ items } />
+        </header>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
