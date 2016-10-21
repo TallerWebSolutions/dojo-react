@@ -3,11 +3,17 @@ import React, { Component, PropTypes } from 'react'
 class ListTodoItems extends Component {
 
   static propTypes = {
-    items: PropTypes.array
+    items: PropTypes.array,
+    onRemoveItem: PropTypes.func.required
   }
 
   static defaultProps = {
     items: []
+    // onRemoveItem: () => ({})
+  }
+
+  removeItem = key => {
+    return this.props.onRemoveItem(key)
   }
 
   render () {
@@ -15,7 +21,7 @@ class ListTodoItems extends Component {
     return (
       <ul>
         { items.map((item, key) => (
-          <li key={ key }>{ item }</li>
+          <li key={ key }>{ item } <button className="remove" onClick={ this.removeItem(key) }>remove</button></li>
         )) }
       </ul>
     )

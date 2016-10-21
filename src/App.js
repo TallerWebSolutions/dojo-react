@@ -9,6 +9,19 @@ class App extends Component {
     this.state = { items: [] }
   }
 
+  handleRemove = key => {
+    const { items } = this.state
+    const filteredItems = items.filter((item, index) => {
+      return index !== key
+    })
+
+    return event => {
+      this.setState({
+        items: filteredItems
+      })
+    }
+  }
+
   handleOnSubmit = (value) => {
     const { items } = this.state
 
@@ -25,7 +38,7 @@ class App extends Component {
         <header>
           <h1>Todo App</h1>
           <AddTodoItem onSubmit={ this.handleOnSubmit } />
-          <ListTodoItems items={ items } />
+          <ListTodoItems items={ items } onRemoveItem={ this.handleRemove } />
         </header>
       </div>
     )
