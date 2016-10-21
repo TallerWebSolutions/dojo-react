@@ -4,7 +4,7 @@ class ListTodoItems extends Component {
 
   static propTypes = {
     items: PropTypes.array,
-    onRemoveItem: PropTypes.func.required
+    onRemoveItem: PropTypes.func.isRequired
   }
 
   static defaultProps = {

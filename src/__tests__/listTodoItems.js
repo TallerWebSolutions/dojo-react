@@ -18,8 +18,9 @@ it('should list items when they are available', () => {
 it('should remove an item when remove button is clicked', () => {
   const mockItems = ['item one', 'item two', 'item three']
   const handleRemove = jest.fn()
-  const wrapper = shallow(<ListTodoItems items={ mockItems } onRemoveItem={ handleRemove } />)
-  wrapper.find('button.remove').first().simulate('click')
+  const handleOnRemoveItem = key => handleRemove
+  const wrapper = mount(<ListTodoItems items={ mockItems } onRemoveItem={ handleOnRemoveItem } />)
 
-  expect(wrapper.find('li').length).toBe(2)
+  wrapper.find('button.remove').first().simulate('click')
+  expect(handleRemove).toHaveBeenCalledTimes(1)
 })
