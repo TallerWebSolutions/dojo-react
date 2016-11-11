@@ -2,11 +2,16 @@ import React, { Component } from 'react'
 import './App.css'
 import AddTodoItem from './components/AddTodoItem'
 import ListTodoItems from './components/ListTodoItems'
+import uuid from 'uuid'
+
 class App extends Component {
 
   constructor (props) {
     super(props)
-    this.state = { items: [] }
+    this.state = {
+      items: [],
+      isEditing: false
+    }
   }
 
   handleRemove = key => {
@@ -22,11 +27,53 @@ class App extends Component {
     }
   }
 
+  handleEdit = key => {
+    const { items } = this.state
+    const modifiedItems = items.map((item, index) => {
+      if (index !== key) {
+        return item
+      }
+
+      return {
+        ...item,
+        isEditing: true
+      }
+    })
+
+    return event => {
+      this.setState({
+        items: modifiedItems
+      })
+    }
+  }
+
   handleOnSubmit = (value) => {
     const { items } = this.state
 
     this.setState({
-      items: items.concat(value)
+      items: items.concat({
+        id: uuid.v1(),
+        data: value,
+        isEditing: false
+      })
+    })
+  }
+
+  handleEditSubmit = ({ value, id }) => {
+    const { items } = this.state
+
+    this.setState({
+      items: items.map((item, index) => {
+        if (item.id !== id) {
+          return item
+        }
+
+        return {
+          ...item,
+          data: value,
+          isEditing: false,
+        }
+      })
     })
   }
 
@@ -38,7 +85,12 @@ class App extends Component {
         <header>
           <h1>Todo App</h1>
           <AddTodoItem onSubmit={ this.handleOnSubmit } />
-          <ListTodoItems items={ items } onRemoveItem={ this.handleRemove } />
+          <ListTodoItems
+            items={ items }
+            onEditItem={ this.handleEdit }
+            onRemoveItem={ this.handleRemove }
+            onEditSubmit={ this.handleEditSubmit }
+          />
         </header>
       </div>
     )

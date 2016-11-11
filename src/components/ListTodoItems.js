@@ -4,7 +4,9 @@ class ListTodoItems extends Component {
 
   static propTypes = {
     items: PropTypes.array,
-    onRemoveItem: PropTypes.func.isRequired
+    onRemoveItem: PropTypes.func.isRequired,
+    onEditItem: PropTypes.func.isRequired,
+    onEditSubmit: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -12,8 +14,19 @@ class ListTodoItems extends Component {
     // onRemoveItem: () => ({})
   }
 
+  editSubmit = id => {
+    return event => {
+      event.preventDefault()
+      this.props.onEditSubmit({ value: this.refs['edit-' + id].value, id })
+    }
+  }
+
   removeItem = key => {
     return this.props.onRemoveItem(key)
+  }
+
+  editItem = key => {
+    return this.props.onEditItem(key)
   }
 
   render () {
@@ -21,7 +34,20 @@ class ListTodoItems extends Component {
     return (
       <ul>
         { items.map((item, key) => (
-          <li key={ key }>{ item } <button className="remove" onClick={ this.removeItem(key) }>remove</button></li>
+          <li key={ key } >
+            { !item.isEditing && (
+              <div>
+                <p onClick={ this.editItem(key) }>{ item.data }</p>
+                <button className="remove" onClick={ this.removeItem(key) }>remove</button>
+              </div>
+            ) }
+            { item.isEditing && (
+              <form onSubmit={ this.editSubmit(item.id) } >
+                <input ref={ 'edit-' + item.id } type="text" defaultValue={ item.data } />
+                <button type="submit" className="save">save</button>
+              </form>
+            ) }
+          </li>
         )) }
       </ul>
     )

@@ -17,7 +17,7 @@ it('should add items to list', () => {
   AddTodoItem.find('form input').simulate('change', { target: { value: 'hey' } })
   AddTodoItem.find('form').simulate('submit')
 
-  expect(Wrapper.state().items).toContain('hey')
+  expect(Wrapper.state().items[0].data).toBe('hey')
 })
 
 it('should show items', () => {
@@ -25,7 +25,10 @@ it('should show items', () => {
   const ListTodoItems = Wrapper.find('ListTodoItems')
 
   Wrapper.setState({
-    items: ['item1', 'item2']
+    items: [
+      { data: 'item1', isEditing: false },
+      { data: 'item2', isEditing: false }
+    ]
   })
 
   expect(ListTodoItems.text()).toContain('item1')
