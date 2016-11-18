@@ -7,7 +7,8 @@ class ListTodoItems extends Component {
     items: PropTypes.array,
     onRemoveItem: PropTypes.func.isRequired,
     onEditItem: PropTypes.func.isRequired,
-    onEditSubmit: PropTypes.func.isRequired
+    onEditSubmit: PropTypes.func.isRequired,
+    onCompleteItem: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -16,7 +17,7 @@ class ListTodoItems extends Component {
   }
 
   render () {
-    const { items, onEditItem, onRemoveItem, onEditSubmit } = this.props
+    const { items, onEditItem, onCompleteItem, onRemoveItem, onEditSubmit } = this.props
     return (
       <ul>
         { items.map((item, key) => (
@@ -26,6 +27,7 @@ class ListTodoItems extends Component {
               onEditSubmit={ onEditSubmit }
               onRemoveItem={ onRemoveItem }
               onEditItem={ onEditItem }
+              onCompleteItem={ onCompleteItem }
             />
           </li>
         )) }

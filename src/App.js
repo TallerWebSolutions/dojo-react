@@ -76,11 +76,15 @@ class App extends Component {
     })
   }
 
+  handleCompleteItem = () => {
+
+  }
+
   render () {
     const { items } = this.state
 
     return (
-      <div className='App'>
+      <div className="App">
         <header>
           <h1>Todo App</h1>
           <AddTodoItem onSubmit={ this.handleOnSubmit } />
@@ -89,6 +93,7 @@ class App extends Component {
             onEditItem={ this.handleEdit }
             onRemoveItem={ this.handleRemove }
             onEditSubmit={ this.handleEditSubmit }
+            onCompleteItem={ this.handleCompleteItem }
           />
         </header>
       </div>

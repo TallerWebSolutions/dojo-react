@@ -6,6 +6,7 @@ class ListItem extends Component {
     onEditItem: PropTypes.func.isRequired,
     onEditSubmit: PropTypes.func.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
+    onCompleteItem: PropTypes.func.isRequired,
   }
 
   handleEdit = event => {
@@ -24,6 +25,10 @@ class ListItem extends Component {
     this.props.onEditSubmit({ value, id })
   }
 
+  handleCheck = event => {
+    this.props.onCompleteItem(this.props.item.id)
+  }
+
   render () {
     const { item } = this.props
     return (
@@ -32,6 +37,7 @@ class ListItem extends Component {
           <div>
             <p onClick={ this.handleEdit }>{ item.data }</p>
             <button className="remove" onClick={ this.handleRemove }>remove</button>
+            <input type="checkbox" checked={ item.completed } onChange={ this.handleCheck } />
           </div>
         ) }
         { item.isEditing && (

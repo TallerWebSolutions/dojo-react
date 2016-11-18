@@ -3,10 +3,8 @@ import { shallow, mount } from 'enzyme'
 import ListTodoItems from '../components/ListTodoItems'
 
 it('should render without crashing', () => {
-  const handleRemove = jest.fn()
-  const handleEdit = jest.fn()
-  const handleEditSubmit = jest.fn()
-  shallow(<ListTodoItems onRemoveItem={ handleRemove } onEditItem={ handleEdit } onEditSubmit={ handleEditSubmit } />)
+  const stub = jest.fn()
+  shallow(<ListTodoItems onRemoveItem={ stub } onCompleteItem={ stub } onEditItem={ stub } onEditSubmit={ stub } />)
 })
 
 it('should list items when they are available', () => {
@@ -15,10 +13,8 @@ it('should list items when they are available', () => {
     { id: '2', data: 'item two' },
     { id: '3', data: 'item three' }
   ]
-  const handleRemove = jest.fn()
-  const handleEdit = jest.fn()
-  const handleEditSubmit = jest.fn()
-  const wrapper = shallow(<ListTodoItems items={ mockItems } onRemoveItem={ handleRemove } onEditItem={ handleEdit } onEditSubmit={ handleEditSubmit } />)
+  const stub = jest.fn()
+  const wrapper = shallow(<ListTodoItems items={ mockItems } onCompleteItem={ stub } onRemoveItem={ stub } onEditItem={ stub } onEditSubmit={ stub } />)
 
   expect(wrapper.find('li').length).toBe(3)
 })
@@ -38,6 +34,7 @@ it('should remove an item when remove button is clicked', () => {
       onRemoveItem={ onRemoveItem }
       onEditItem={ stub }
       onEditSubmit={ stub }
+      onCompleteItem={ stub }
     />
   )
 
@@ -60,6 +57,7 @@ it('should be able to edit an item', () => {
       onEditItem={ onEditItem }
       onRemoveItem={ stub }
       onEditSubmit={ stub }
+      onCompleteItem={ stub }
     />
   )
 
@@ -82,6 +80,7 @@ it('should be able to update an item', () => {
       onEditItem={ stub }
       onRemoveItem={ stub }
       onEditSubmit={ onEditSubmit }
+      onCompleteItem={ stub }
     />
   )
 
@@ -95,5 +94,18 @@ it('should be able to check an item as done', () => {
     { data: 'item two', completed: true },
     { data: 'item three' }
   ]
-  //const wrapper = mount(<ListTodoItems items={ mockItems } onRemoveItem={ handleOnRemoveItem } onEditItem={ handleEdit } onEditSubmit={ handleEditSubmit } />)
+
+  const stub = jest.fn()
+  const onCompleteItem = jest.fn()
+
+  const wrapper = mount(<ListTodoItems items={ mockItems } onCompleteItem={ onCompleteItem } onRemoveItem={ stub } onEditItem={ stub } onEditSubmit={ stub } />)
+  const checkboxes = wrapper.find('input[type="checkbox"]')
+  const checked = wrapper.find('input[checked]')
+
+  expect(checkboxes.length).toBe(3)
+  expect(checked.length).toBe(1)
+
+  const checkbox = wrapper.find('input[type="checkbox"]').first()
+  checkbox.simulate('change')
+  expect(onCompleteItem).toHaveBeenCalledTimes(1)
 })
