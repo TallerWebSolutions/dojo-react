@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import ListItem from './ListItem'
 
 class ListTodoItems extends Component {
 
@@ -14,39 +15,18 @@ class ListTodoItems extends Component {
     // onRemoveItem: () => ({})
   }
 
-  editSubmit = id => {
-    return event => {
-      event.preventDefault()
-      this.props.onEditSubmit({ value: this.refs['edit-' + id].value, id })
-    }
-  }
-
-  removeItem = key => {
-    return this.props.onRemoveItem(key)
-  }
-
-  editItem = key => {
-    return this.props.onEditItem(key)
-  }
-
   render () {
-    const { items } = this.props
+    const { items, onEditItem, onRemoveItem, onEditSubmit } = this.props
     return (
       <ul>
         { items.map((item, key) => (
           <li key={ key } >
-            { !item.isEditing && (
-              <div>
-                <p onClick={ this.editItem(key) }>{ item.data }</p>
-                <button className="remove" onClick={ this.removeItem(key) }>remove</button>
-              </div>
-            ) }
-            { item.isEditing && (
-              <form onSubmit={ this.editSubmit(item.id) } >
-                <input ref={ 'edit-' + item.id } type="text" defaultValue={ item.data } />
-                <button type="submit" className="save">save</button>
-              </form>
-            ) }
+            <ListItem
+              item={ item }
+              onEditSubmit={ onEditSubmit }
+              onRemoveItem={ onRemoveItem }
+              onEditItem={ onEditItem }
+            />
           </li>
         )) }
       </ul>

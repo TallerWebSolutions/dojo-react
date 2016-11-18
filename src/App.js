@@ -1,15 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import './App.css'
 import AddTodoItem from './components/AddTodoItem'
 import ListTodoItems from './components/ListTodoItems'
 import uuid from 'uuid'
 
 class App extends Component {
+  static propTypes = {
+    items: PropTypes.array
+  }
 
   constructor (props) {
     super(props)
+
     this.state = {
-      items: [],
+      items: props.items || [],
       isEditing: false
     }
   }
@@ -27,10 +31,11 @@ class App extends Component {
     }
   }
 
-  handleEdit = key => {
+  handleEdit = id => {
     const { items } = this.state
-    const modifiedItems = items.map((item, index) => {
-      if (index !== key) {
+
+    const modifiedItems = items.map(item => {
+      if (item.id !== id) {
         return item
       }
 
@@ -40,22 +45,8 @@ class App extends Component {
       }
     })
 
-    return event => {
-      this.setState({
-        items: modifiedItems
-      })
-    }
-  }
-
-  handleOnSubmit = (value) => {
-    const { items } = this.state
-
     this.setState({
-      items: items.concat({
-        id: uuid.v1(),
-        data: value,
-        isEditing: false
-      })
+      items: modifiedItems
     })
   }
 
@@ -73,6 +64,18 @@ class App extends Component {
           data: value,
           isEditing: false,
         }
+      })
+    })
+  }
+
+  handleOnSubmit = value => {
+    const { items } = this.state
+
+    this.setState({
+      items: items.concat({
+        id: uuid.v1(),
+        data: value,
+        isEditing: false
       })
     })
   }

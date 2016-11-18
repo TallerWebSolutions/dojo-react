@@ -10,7 +10,11 @@ it('should render without crashing', () => {
 })
 
 it('should list items when they are available', () => {
-  const mockItems = ['one', 'two', 'three']
+  const mockItems = [
+    { id: '1', data: 'item one' },
+    { id: '2', data: 'item two' },
+    { id: '3', data: 'item three' }
+  ]
   const handleRemove = jest.fn()
   const handleEdit = jest.fn()
   const handleEditSubmit = jest.fn()
@@ -20,32 +24,76 @@ it('should list items when they are available', () => {
 })
 
 it('should remove an item when remove button is clicked', () => {
-  const mockItems = ['item one', 'item two', 'item three']
-  const handleRemove = jest.fn()
-  const handleEdit = jest.fn()
-  const handleEditSubmit = jest.fn()
-  const handleOnRemoveItem = key => handleRemove
-  const wrapper = mount(<ListTodoItems items={ mockItems } onRemoveItem={ handleOnRemoveItem } onEditItem={ handleEdit } onEditSubmit={ handleEditSubmit } />)
+  const mockItems = [
+    { id: '1', data: 'item one' },
+    { id: '2', data: 'item two' },
+    { id: '3', data: 'item three' }
+  ]
+  const stub = jest.fn()
+  const onRemoveItem = jest.fn()
+
+  const wrapper = mount(
+    <ListTodoItems
+      items={ mockItems }
+      onRemoveItem={ onRemoveItem }
+      onEditItem={ stub }
+      onEditSubmit={ stub }
+    />
+  )
 
   wrapper.find('button.remove').first().simulate('click')
-  expect(handleRemove).toHaveBeenCalledTimes(1)
+  expect(onRemoveItem).toHaveBeenCalledTimes(1)
 })
 
 it('should be able to edit an item', () => {
   const mockItems = [
+    { id: '1', data: 'item one' },
+    { id: '2', data: 'item two' },
+    { id: '3', data: 'item three' }
+  ]
+  const stub = jest.fn()
+  const onEditItem = jest.fn()
+
+  const wrapper = mount(
+    <ListTodoItems
+      items={ mockItems }
+      onEditItem={ onEditItem }
+      onRemoveItem={ stub }
+      onEditSubmit={ stub }
+    />
+  )
+
+  wrapper.find('li p').first().simulate('click')
+  expect(onEditItem).toHaveBeenCalledTimes(1)
+})
+
+it('should be able to update an item', () => {
+  const mockItems = [
+    { id: '1', data: 'item one', isEditing: true },
+    { id: '2', data: 'item two' },
+    { id: '3', data: 'item three' }
+  ]
+  const stub = jest.fn()
+  const onEditSubmit = jest.fn()
+
+  const wrapper = mount(
+    <ListTodoItems
+      items={ mockItems }
+      onEditItem={ stub }
+      onRemoveItem={ stub }
+      onEditSubmit={ onEditSubmit }
+    />
+  )
+
+  wrapper.find('li form').first().simulate('submit')
+  expect(onEditSubmit).toHaveBeenCalledTimes(1)
+})
+
+it('should be able to check an item as done', () => {
+  const mockItems = [
     { data: 'item one' },
-    { data: 'item two', isEditing: true },
+    { data: 'item two', completed: true },
     { data: 'item three' }
   ]
-  const handleRemove = jest.fn()
-  const handleEdit = () => {
-    return () => handleEditClick()
-  }
-  const handleEditClick = jest.fn()
-  const handleEditSubmit = jest.fn()
-  const handleOnRemoveItem = key => handleRemove
-  const wrapper = mount(<ListTodoItems items={ mockItems } onRemoveItem={ handleOnRemoveItem } onEditItem={ handleEdit } onEditSubmit={ handleEditSubmit } />)
-  wrapper.find('li p').first().simulate('click')
-  expect(handleEditClick).toHaveBeenCalledTimes(1)
-  expect(wrapper.find('li form').length).toBe(1)
+  //const wrapper = mount(<ListTodoItems items={ mockItems } onRemoveItem={ handleOnRemoveItem } onEditItem={ handleEdit } onEditSubmit={ handleEditSubmit } />)
 })

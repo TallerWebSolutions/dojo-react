@@ -46,3 +46,36 @@ it('should show added items', () => {
 
   expect(ListTodoItems.text()).toContain('added item')
 })
+
+it('should be able to edit an item', () => {
+  const mockItems = [
+    { id: '1', data: 'item one' },
+    { id: '2', data: 'item two' },
+    { id: '3', data: 'item three' }
+  ]
+
+  const wrapper = mount(
+    <App items={ mockItems } />
+  )
+
+  wrapper.find('li p').first().simulate('click')
+  expect(wrapper.find('li form').length).toBe(1)
+})
+
+it('should be able to update an item', () => {
+  const mockItems = [
+    { id: '1', data: 'item one' },
+    { id: '2', data: 'item two', isEditing: true },
+    { id: '3', data: 'item three' }
+  ]
+
+  const wrapper = mount(
+    <App items={ mockItems } />
+  )
+
+  expect(wrapper.find('li form').length).toBe(1)
+  wrapper.find('li form').first().simulate('submit')
+  expect(wrapper.find('li form').length).toBe(0)
+
+  expect(wrapper.state().items[1].isEditing).toBe(false)
+})

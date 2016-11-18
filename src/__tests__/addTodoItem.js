@@ -8,7 +8,7 @@ const defaultProps = {
 }
 
 it('renders without crashing', () => {
-  shallow(<App />)
+  shallow(<App items={ [] } />)
 })
 
 it('renders add todo item without crashing', () => {
@@ -16,7 +16,7 @@ it('renders add todo item without crashing', () => {
 })
 
 it('should have add component', () => {
-  const wrapper = mount(<App />)
+  const wrapper = mount(<App items={ [] } />)
   expect(wrapper.find('AddTodoItem').length).toBe(1)
 })
 
