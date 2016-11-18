@@ -18,17 +18,13 @@ class App extends Component {
     }
   }
 
-  handleRemove = key => {
+  handleRemove = id => {
     const { items } = this.state
-    const filteredItems = items.filter((item, index) => {
-      return index !== key
-    })
+    const filteredItems = items.filter(item => item.id !== id)
 
-    return event => {
-      this.setState({
-        items: filteredItems
-      })
-    }
+    this.setState({
+      items: filteredItems
+    })
   }
 
   handleEdit = id => {

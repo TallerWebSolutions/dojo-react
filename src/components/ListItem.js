@@ -31,13 +31,13 @@ class ListItem extends Component {
         { !item.isEditing && (
           <div>
             <p onClick={ this.handleEdit }>{ item.data }</p>
-            <button className='remove' onClick={ this.handleRemove }>remove</button>
+            <button className="remove" onClick={ this.handleRemove }>remove</button>
           </div>
         ) }
         { item.isEditing && (
           <form onSubmit={ this.handleEditSubmit } >
-            <input ref={ item.id } type='text' defaultValue={ item.data } />
-            <button type='submit' className='save'>save</button>
+            <input ref={ item.id } type="text" defaultValue={ item.data } />
+            <button type="submit" className="save">save</button>
           </form>
         ) }
       </div>
